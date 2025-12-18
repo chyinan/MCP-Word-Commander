@@ -6,7 +6,7 @@
 MCP_WORD_EDITER 用于在本地对文本/词条进行快速处理与编辑，基于 Python 实现的简单服务。
 
 ## 依赖
-- Python 3.8+
+- Python 3.10+
 - 见 `requirements.txt`
 
 ## 快速开始
