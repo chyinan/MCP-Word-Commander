@@ -30,3 +30,38 @@ python server.py
 
 ## 许可证
 本项目使用 MIT 许可证，详见 `LICENSE`。
+
+## English
+
+# MCP_WORD_EDITOR
+
+Lightweight text processing and editing tool.
+
+## Overview
+MCP_WORD_EDITOR is a simple local service implemented in Python for quickly processing and editing text/entries.
+
+## Requirements
+- Python 3.10+
+- See `requirements.txt`
+
+## Quick Start
+```bash
+python -m venv venv
+venv\Scripts\activate    # Windows
+# or (macOS / Linux)
+# source venv/bin/activate
+pip install -r requirements.txt
+python server.py
+```
+
+The server runs by default at http://localhost:8000 (check or modify `server.py` if needed).
+
+## Project Structure (example)
+- `server.py` - startup script
+- `requirements.txt` - Python dependencies
+
+## Contributing
+Issues and pull requests are welcome. Please ensure code style consistency and include necessary descriptions before submitting.
+
+## License
+This project is licensed under the MIT License. See `LICENSE` for details.
