@@ -667,7 +667,7 @@ def read_images(
     file_path: str, 
     image_index: Optional[int] = None,
     include_tables: bool = True
-) -> Union[List[MCPImage], str]:
+):
     """
     读取 Word 文档中的图片，直接返回给 AI 查看。
     
