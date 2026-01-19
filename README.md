@@ -10,6 +10,8 @@
 
 *让 AI 助手直接读取、编辑和操作 Word 文档*
 
+**[English](#-mcp-word-commander-english) | [中文](#-mcp-word-commander)**
+
 </div>
 
 ---
@@ -324,6 +326,8 @@ docker run -it --rm -v /path/to/your/docs:/documents mcp-word-commander:latest
 [![MCP](https://img.shields.io/badge/MCP-Compatible-orange.svg)](https://modelcontextprotocol.io/)
 
 *Enable AI assistants to directly read, edit, and manipulate Word documents*
+
+**[中文](#-mcp-word-commander) | [English](#-mcp-word-commander-english)**
 
 </div>
 
