@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  word-commander:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mcp-word-commander:latest
+    container_name: mcp-word-commander
+    
+    # Mount local documents directory
+    volumes:
+      - ./documents:/documents
+    
+    # MCP uses stdio, so we need interactive mode
+    stdin_open: true
+    tty: true
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M

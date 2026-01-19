@@ -1,0 +1,69 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-word-edit"
+version = "0.2.0"
+description = "MCP (Model Context Protocol) server for Word document operations - read, write, edit, and manipulate .docx files with AI assistants"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+keywords = [
+    "mcp",
+    "word",
+    "docx",
+    "document",
+    "ai",
+    "llm",
+    "claude",
+    "model-context-protocol"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Office Suites",
+    "Topic :: Text Processing :: Markup",
+]
+dependencies = [
+    "mcp>=1.0.0",
+    "python-docx>=1.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/mcp-word-edit"
+Repository = "https://github.com/yourusername/mcp-word-edit"
+Issues = "https://github.com/yourusername/mcp-word-edit/issues"
+
+[project.scripts]
+mcp-word-edit = "server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "server.py",
+    "README.md",
+    "LICENSE",
+    "requirements.txt",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

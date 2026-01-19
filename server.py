@@ -1254,6 +1254,11 @@ def delete_table_row(file_path: str, table_index: int, row_index: int) -> str:
         return json.dumps({"error": str(e)}, ensure_ascii=False)
 
 
-if __name__ == "__main__":
+def main():
+    """Entry point for the MCP Word Commander server."""
     mcp.run()
+
+
+if __name__ == "__main__":
+    main()
 

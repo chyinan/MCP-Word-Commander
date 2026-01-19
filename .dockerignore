@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv
+ENV
+env
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Build
+build
+dist
+*.egg-info
+
+# Test
+.pytest_cache
+.coverage
+htmlcov
+
+# Docs
+*.md
+!README.md
+
+# Local files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Claude/Cursor config
+.claude
+.cursor
+
+# Documents (will be mounted as volume)
+documents/
+*.docx
+*.doc

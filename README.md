@@ -14,9 +14,12 @@ MCP Word Commander 是一个基于 MCP (Model Context Protocol) 的 Word 文档�
 ## 依赖
 
 - Python 3.10+
+- Docker（可选，用于容器化部署）
 - 见 `requirements.txt`
 
 ## 快速开始
+
+### 方式一：本地运行
 
 ```bash
 # Windows
@@ -29,6 +32,76 @@ source venv/bin/activate
 pip install -r requirements.txt
 python server.py
 ```
+
+### 方式二：Docker 部署
+
+#### 使用 Docker Compose（推荐）
+
+```bash
+# 构建并启动
+docker-compose up -d --build
+
+# 查看日志
+docker-compose logs -f
+
+# 停止服务
+docker-compose down
+```
+
+#### 使用 Docker 命令
+
+```bash
+# 构建镜像
+docker build -t mcp-word-commander:latest .
+
+# 运行容器（挂载本地 documents 目录）
+docker run -it --rm \
+  -v $(pwd)/documents:/documents \
+  mcp-word-commander:latest
+
+# Windows PowerShell
+docker run -it --rm `
+  -v ${PWD}/documents:/documents `
+  mcp-word-commander:latest
+```
+
+### 方式三：在 Claude Desktop / Cursor 中配置
+
+在 MCP 配置文件中添加：
+
+#### 本地运行配置
+
+```json
+{
+  "mcpServers": {
+    "word-commander": {
+      "command": "python",
+      "args": ["D:/Program/mcp_word_edit/server.py"],
+      "env": {}
+    }
+  }
+}
+```
+
+#### Docker 配置
+
+```json
+{
+  "mcpServers": {
+    "word-commander": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-v", "D:/Documents:/documents",
+        "mcp-word-commander:latest"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+> **注意**：使用 Docker 时，文档路径需要是容器内的路径（如 `/documents/example.docx`），而非宿主机路径。
 
 ## 功能列表
 
@@ -137,9 +210,28 @@ update_table_cell(
 mcp_word_edit/
 ├── server.py           # MCP 服务器主文件
 ├── requirements.txt    # Python 依赖
-├── README.md          # 说明文档
-└── .venv/             # 虚拟环境
+├── Dockerfile          # Docker 镜像配置
+├── docker-compose.yml  # Docker Compose 配置
+├── .dockerignore       # Docker 构建忽略文件
+├── README.md           # 说明文档
+└── documents/          # 文档目录（Docker 挂载点）
 ```
+
+## Docker 相关
+
+### 数据持久化
+
+使用 Docker 时，建议将本地目录挂载到容器的 `/documents` 目录：
+
+```bash
+docker run -it --rm -v /path/to/your/docs:/documents mcp-word-commander:latest
+```
+
+### 镜像信息
+
+- 基础镜像：`python:3.12-slim`
+- 预计大小：约 200MB
+- 工作目录：`/documents`
 
 ## 技术特点
 
@@ -147,6 +239,7 @@ mcp_word_edit/
 - **支持中文字体**：完整支持中文字体设置（宋体、黑体等）
 - **灵活的位置插入**：支持在任意段落后插入图片和表格
 - **完整的表格操作**：支持增删改查表格及其内容
+- **Docker 支持**：提供完整的容器化部署方案
 
 ## 贡献
 
@@ -174,9 +267,12 @@ MCP Word Commander is a Word document processing service based on MCP (Model Con
 ## Requirements
 
 - Python 3.10+
+- Docker (optional, for containerized deployment)
 - See `requirements.txt`
 
 ## Quick Start
+
+### Option 1: Local Installation
 
 ```bash
 # Windows
@@ -189,6 +285,76 @@ source venv/bin/activate
 pip install -r requirements.txt
 python server.py
 ```
+
+### Option 2: Docker Deployment
+
+#### Using Docker Compose (Recommended)
+
+```bash
+# Build and start
+docker-compose up -d --build
+
+# View logs
+docker-compose logs -f
+
+# Stop service
+docker-compose down
+```
+
+#### Using Docker Command
+
+```bash
+# Build image
+docker build -t mcp-word-commander:latest .
+
+# Run container (mount local documents directory)
+docker run -it --rm \
+  -v $(pwd)/documents:/documents \
+  mcp-word-commander:latest
+
+# Windows PowerShell
+docker run -it --rm `
+  -v ${PWD}/documents:/documents `
+  mcp-word-commander:latest
+```
+
+### Option 3: Configure in Claude Desktop / Cursor
+
+Add to your MCP configuration file:
+
+#### Local Configuration
+
+```json
+{
+  "mcpServers": {
+    "word-commander": {
+      "command": "python",
+      "args": ["/path/to/mcp_word_edit/server.py"],
+      "env": {}
+    }
+  }
+}
+```
+
+#### Docker Configuration
+
+```json
+{
+  "mcpServers": {
+    "word-commander": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-v", "/path/to/documents:/documents",
+        "mcp-word-commander:latest"
+      ],
+      "env": {}
+    }
+  }
+}
+```
+
+> **Note**: When using Docker, document paths should be container paths (e.g., `/documents/example.docx`), not host paths.
 
 ## Feature List
 
@@ -232,74 +398,21 @@ python server.py
 | `delete_table_row` | Delete row from table |
 | `delete_table` | Delete entire table |
 
-## Usage Examples
+## Docker Information
 
-### Read Images from Document
+### Data Persistence
 
-```python
-# AI can directly "see" images in the document
-read_images("document.docx")
+When using Docker, mount a local directory to `/documents` in the container:
 
-# Read only the first image
-read_images("document.docx", image_index=0)
+```bash
+docker run -it --rm -v /path/to/your/docs:/documents mcp-word-commander:latest
 ```
 
-### Insert Image at Specific Position
+### Image Details
 
-```python
-# Insert image after paragraph 3, set width to 4 inches, center alignment
-insert_image_after_paragraph(
-    file_path="document.docx",
-    after_index=2,
-    image_path="image.png",
-    width_inches=4.0,
-    alignment="CENTER"
-)
-```
-
-### Insert Table at Specific Position
-
-```python
-# Insert a 3x3 table after paragraph 5
-insert_table_after_paragraph(
-    file_path="document.docx",
-    after_index=4,
-    rows=3,
-    cols=3,
-    data=[
-        ["Name", "Age", "City"],
-        ["John", "25", "Beijing"],
-        ["Jane", "30", "Shanghai"]
-    ],
-    header_bold=True
-)
-```
-
-### Modify Table Cell
-
-```python
-# Modify cell (1, 2) of the first table
-update_table_cell(
-    file_path="document.docx",
-    table_index=0,
-    row=1,
-    col=2,
-    new_text="New Content",
-    font_name="Microsoft YaHei",
-    font_size=12,
-    is_bold=True
-)
-```
-
-## Project Structure
-
-```
-mcp_word_edit/
-├── server.py           # MCP server main file
-├── requirements.txt    # Python dependencies
-├── README.md          # Documentation
-└── .venv/             # Virtual environment
-```
+- Base Image: `python:3.12-slim`
+- Estimated Size: ~200MB
+- Working Directory: `/documents`
 
 ## Technical Features
 
@@ -307,6 +420,7 @@ mcp_word_edit/
 - **Chinese Font Support**: Full support for Chinese font settings (SimSun, SimHei, etc.)
 - **Flexible Position Insertion**: Support inserting images and tables after any paragraph
 - **Complete Table Operations**: Support CRUD operations for tables and their content
+- **Docker Support**: Complete containerized deployment solution
 
 ## Contributing
 
